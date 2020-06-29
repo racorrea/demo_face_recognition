@@ -74,23 +74,20 @@ while True:
 		
 		# Actualizamos la lista de nombres
 		nombres_rostros.append(nombre)
-	# Dibujamos un recuadro alrededor de los rostros encontrados
+	#Dibujamos un recuadro rojo alrededor de los rostros desconocidos, y uno verde alrededor de los conocidos:
 	for ((top, right, bottom, left), nombre) in zip(loc_rostros, nombres_rostros):
-		#Deshacemos la reducción de tamaño para tener las coordenadas de la imagen original:
-		top = int(top * r)
-		right = int(right * r)
-		bottom = int(bottom * r)
-		left = int(left * r)
 		#Cambiar el color segun el nombre:
 	    if nombre != "Desconocido":
 	        color = (0,255,0) #Verde
 	    else:
 	        color = (0,0,255) #Rojo
-
-		#Dibujar un rectángulo alrededor de cada rostro identificado, y escribir el nombre:
-        cv2.rectangle(img, (left, top), (right, bottom), color, 2)
-        cv2.rectangle(img, (left, bottom - 20), (right, bottom), color, -1)
-        cv2.putText(img, nombre, (left, bottom - 6), font, 0.6, (0,0,0), 1)
+	 
+	    #Dibujar los recuadros alrededor del rostro:
+	    cv2.rectangle(img, (left, top), (right, bottom), color, 2)
+	    cv2.rectangle(img, (left, bottom - 20), (right, bottom), color, -1)
+	 
+	    #Escribir el nombre de la persona:
+	    cv2.putText(img, nombre, (left, bottom - 6), font, 0.6, (0,0,0), 1)
 
 	# Si el escritor del video es NONE, inicializamos el writer.
 	if writer is None and args["output"] is not None:
