@@ -1,0 +1,15 @@
+Se requiere tener instalado las librerías:
+
+Para poder instalar DLIB es necesario, tener previamente instalado la libreía CMAKE (pip install cmake)
+
+#DLIB
+pip install dlib
+
+#FACE_RECOGNITION
+pip install face-recognition
+
+#OPENCV
+pip install opencv-python
+
+#IMUTILS
+pip install imutils
