@@ -10,10 +10,11 @@ import pickle
 import time
 import cv2
 
+#Ruta al archivo que contiene las codificaciones faciales
+encodingFile = "encodings.pickle"
+
 #Construir el analizador de argumentos de la línea de comandos
 ap = argparse.ArgumentParser()
-ap.add_argument("-e", "--encodings", required=True,
-	help="Ruta al archivo que contiene las codificaciones faciales")
 ap.add_argument("-i", "--input", required=True,
 	help="Ruta al video de entrada")
 ap.add_argument("-o", "--output", type=str,
@@ -27,7 +28,7 @@ font = cv2.FONT_HERSHEY_COMPLEX
 
 #Cargamos los encodings conocidos
 print("[INFO] Cargando encodings...")
-data = pickle.loads(open(args["encodings"], "rb").read())
+data = pickle.loads(open(encodingFile, "rb").read())
 
 #Inicializamos el puntero al archivo de video y al escritor de video
 print("[INFO] procesando video...")
@@ -46,14 +47,14 @@ while True:
 
 	# Convertimos el frame de BGR to RGB luego modificamos el tamaño
 	# a 750px (para acelarar el procesamiento)
-	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+	#rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 	rgb = imutils.resize(frame, width=750)
 	r = frame.shape[1] / float(rgb.shape[1])
 
 	# Detectamos las coordenadas (x, y)de los recuadros correspondientes
 	# a cada rostro en la imagen de entrada y luego calculamos los encodings de cada uno
 	loc_rostros = face_recognition.face_locations(rgb,
-		model="cnn")
+		model="hog")
 	encodings_rostros = face_recognition.face_encodings(rgb, loc_rostros)
 	nombres_rostros = []
 
@@ -65,7 +66,7 @@ while True:
 		nombre = "Desconocido"
 
 		#El array 'coincidencias' es ahora un array de booleanos.
-    	#Si contiene algun 'True', es que ha habido alguna coincidencia:
+		#Si contiene algun 'True', es que ha habido alguna coincidencia:
 		if True in coincidencias:
 			# Encuentra los índices de todas las caras coincidentes y luego
 			# inicializa un diccionario para contar el número total de veces que cada 
@@ -86,24 +87,30 @@ while True:
 
 	#Dibujamos un recuadro rojo alrededor de los rostros desconocidos, y uno verde alrededor de los conocidos:
 	for ((top, right, bottom, left), nombre) in zip(loc_rostros, nombres_rostros):
+		#Deshacemos la reducción de tamaño para tener las coordenadas de la imagene original 
+		top = int(top * r)
+		right = int(right * r)
+		bottom = int(bottom *r)
+		left = int (left * r)
+		
 		#Cambiar el color segun el nombre:
-	    if nombre != "Desconocido":
-	        color = (0,255,0) #Verde
-	    else:
-	        color = (0,0,255) #Rojo
+		if nombre != "Desconocido":
+			color = (0,255,0) #Verde
+		else:
+			color = (0,0,255) #Rojo
 	 
-	    #Dibujar los recuadros alrededor del rostro:
-	    cv2.rectangle(img, (left, top), (right, bottom), color, 2)
-	    cv2.rectangle(img, (left, bottom - 20), (right, bottom), color, -1)
+		#Dibujar los recuadros alrededor del rostro:
+		cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
+		cv2.rectangle(frame, (left, bottom - 20), (right, bottom), color, -1)
 	 
-	    #Escribir el nombre de la persona:
-	    cv2.putText(img, nombre, (left, bottom - 6), font, 0.6, (0,0,0), 1)
+		#Escribir el nombre de la persona:
+		cv2.putText(frame, nombre, (left, bottom - 6), font, 0.5, (0,0,0), 1)
 
-    # Si el escritor del video es NONE, inicializamos el writer. 
+	# Si el escritor del video es NONE, inicializamos el writer. 
 	if writer is None and args["output"] is not None:
-		fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-		writer = cv2.VideoWriter(args["output"], fourcc, 24,
-			(frame.shape[1], frame.shape[0]), True)
+		fourcc = cv2.VideoWriter_fourcc(*'XVID')
+		writer = cv2.VideoWriter(args["output"], fourcc, 20.0,
+			(frame.shape[1], frame.shape[0]),True)
 
 	# Si el escritor no es NONE, escribimos el frame con los rostros reconocidos
 	if writer is not None:
@@ -119,6 +126,7 @@ while True:
 			break
 
 # Cerrar los punteros
+cv2.destroyAllWindows()
 stream.release()
 
 # Vericamos si es necesario liberar el puntero del escritor de video

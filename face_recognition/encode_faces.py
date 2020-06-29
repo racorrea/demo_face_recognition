@@ -10,17 +10,13 @@ import pickle
 import cv2
 import os
 
-#Construir el analizador de argumentos de la línea de comandos
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--dataset", required=True,
-	help="Ruta para el directorio del dataset de rostros + imagenes")
-ap.add_argument("-e", "--encodings", required=True,
-	help="Ruta del archivo para almacenar las codificaciones faciales")
-args = vars(ap.parse_args())
+#Declaramos las variables de entrada
+datasetPath = "dataset"
+encodingFile = "encodings.pickle"
 
 # Almacenar las rutas a las imágenes de entrada en nuestro conjunto de datos
 print("[INFO] quantifying faces...")
-imagePaths = list(paths.list_images(args["dataset"]))
+imagePaths = list(paths.list_images(datasetPath))
 # Inicializar la lista de codificaciones conocidos y nombres conocidos
 #Los encodings son las características únicas de cada rostro que permiten diferenciarlo de otros.
 knownEncodings = []
@@ -54,6 +50,6 @@ for (i, imagePath) in enumerate(imagePaths):
 #Almacenamos los encodings + nombres en el archivo especificado
 print("[INFO] Serializando encodings...")
 data = {"encodings": knownEncodings, "names": knownNames}
-f = open(args["encodings"], "wb")
+f = open(encodingFile, "wb")
 f.write(pickle.dumps(data))
 f.close()

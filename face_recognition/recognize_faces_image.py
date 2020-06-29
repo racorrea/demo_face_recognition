@@ -8,10 +8,11 @@ import argparse
 import pickle
 import cv2
 
+#Ruta al archivo que contiene las codificaciones faciales
+encodingFile = "encodings.pickle"
+
 #Construir el analizador de argumentos de la línea de comandos
 ap = argparse.ArgumentParser()
-ap.add_argument("-e", "--encodings", required=True,
-	help="Ruta al archivo que contiene las codificaciones faciales")
 ap.add_argument("-i", "--image", required=True,
 	help="Ruta a la imagen de prueba")
 args = vars(ap.parse_args())
@@ -21,7 +22,7 @@ font = cv2.FONT_HERSHEY_COMPLEX
 
 #Cargamos los encodings conocidos
 print("[INFO] cargando encodings...")
-data = pickle.loads(open(args["encodings"], "rb").read())
+data = pickle.loads(open(encodingFile, "rb").read())
 #Cargamos la imagen de entrada y la convertimos de BGR a RGB
 img = cv2.imread(args["image"])
 rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -71,7 +72,7 @@ for ((top, right, bottom, left), nombre) in zip(loc_rostros, nombres_rostros):
     cv2.rectangle(img, (left, bottom - 20), (right, bottom), color, -1)
  
     #Escribir el nombre de la persona:
-    cv2.putText(img, nombre, (left, bottom - 6), font, 0.6, (0,0,0), 1)
+    cv2.putText(img, nombre, (left, bottom - 6), font, 0.5, (0,0,0), 1)
 
 #Abrimos una ventana con el resultado:
 cv2.imshow("Image", img)
