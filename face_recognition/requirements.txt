@@ -3,13 +3,32 @@ Se requiere tener instalado las librerías:
 Para poder instalar DLIB es necesario, tener previamente instalado la libreía CMAKE (pip install cmake)
 
 #DLIB
-pip install dlib
+	pip install dlib
 
 #FACE_RECOGNITION
-pip install face-recognition
+	pip install face-recognition
 
 #OPENCV
-pip install opencv-python
+	pip install opencv-python
 
 #IMUTILS
-pip install imutils
+	pip install imutils
+
+#USO
+
+#Para generar el archivo encodigns.pickle de los rostros conocidos
+	python encode_faces.py
+
+
+#Para reconocimiento facial en imagen
+	python recognize_face_image.py -i test\image\image_01.jpg
+
+
+#Para reconocimiento facial en video desde webcam, se puede utilizar -o para guardar el video final o simplemente ejecutar el archivo
+	python recognize_face_video.py -o output\webcam_output.avi -y 1
+
+	python recognize_face_video.py
+
+
+#Para reconocimiento facial en video desde un archivo:
+	python recognize_face_video_file.py -i output\video_01.mp4 -o output\video_output_01.avi -y 1
