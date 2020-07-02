@@ -7,7 +7,7 @@ import cv2
 import os
 from PIL import Image # For face recognition we will the the LBPH Face Recognizer 
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 
 
 #  ## Creación de modelo

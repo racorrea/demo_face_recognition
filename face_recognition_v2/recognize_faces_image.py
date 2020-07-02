@@ -11,7 +11,7 @@ from PIL import Image # For face recognition we will the the LBPH Face Recognize
 # In[174]:
 
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 rec = cv2.face.LBPHFaceRecognizer_create();
 rec.read("face_model/trainingdata.yml")
 id=0
