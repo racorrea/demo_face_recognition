@@ -2,12 +2,12 @@
 # coding: utf-8
 
 
-import numpy as np 
-import cv2
+import numpy as np #Trabajar con matrices
+import cv2 #OpenCv
 import os
 from PIL import Image # For face recognition we will the the LBPH Face Recognizer 
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml') #Cargan el algoritmo Haarcascade Classifier
 
 
 #  ## Creación de modelo
@@ -17,7 +17,7 @@ face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 # In[172]:
 
 
-recognizer = cv2.face.LBPHFaceRecognizer_create()
+recognizer = cv2.face.LBPHFaceRecognizer_create() #Se crea instancia al modelo LBPH para el reconocimiento facial
 
 path="img_train"
 

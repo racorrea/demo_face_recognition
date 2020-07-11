@@ -4,7 +4,7 @@
 
 # Importar paquetes necesarios
 from imutils import paths
-import face_recognition
+import face_recognition  #Librería 
 import argparse
 import pickle
 import cv2

@@ -16,8 +16,8 @@
 # In[169]:
 
 
-import numpy as np 
-import cv2
+import numpy as np #Matrices
+import cv2 #OpeCV
 import os
 from PIL import Image # For face recognition we will the the LBPH Face Recognizer 
 
@@ -26,7 +26,7 @@ from PIL import Image # For face recognition we will the the LBPH Face Recognize
 # In[175]:
 
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml') #ALgoritmo Haarscascade Classifier
 cap = cv2.VideoCapture('video_test/1.mp4')
 rec = cv2.face.LBPHFaceRecognizer_create();
 rec.read("face_model/trainingdata.yml")
